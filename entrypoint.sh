@@ -1,12 +1,20 @@
 #!/bin/sh
 set -e
 
-# Inline validation and assignment
-: "${CLIENT_UUID?ERROR: CLIENT_UUID is required}"
-_p=${PORT:-8080}
+# Variable abstraction
+_p_val=${PORT:-8080}
+_u_val=$CLIENT_UUID
 
-# Apply config modifications in one go
-sed -i "s/PORT_PLACEHOLDER/$_p/g; s/UUID_PLACEHOLDER/$CLIENT_UUID/g" /etc/xray/config.json
+# Validation gate
+if [ -z "$_u_val" ]; then
+    printf "Runtime Error: [0x101] Initializer missing required token\n" >&2
+    exit 1
+fi
 
-# Execute primary process
-exec /usr/bin/xray -config /etc/xray/config.json
+# Dynamic manifest update
+_cfg_file="/etc/xray/config.json"
+sed -i "s/PORT_PLACEHOLDER/$_p_val/g" $_cfg_file
+sed -i "s/UUID_PLACEHOLDER/$_u_val/g" $_cfg_file
+
+# Launching core process
+exec /usr/bin/xray -config $_cfg_file
