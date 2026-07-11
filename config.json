@@ -1,5 +1,8 @@
+### config.json
 {
-  "log": { "loglevel": "warning" },
+  "log": {
+    "loglevel": "none"
+  },
   "inbounds": [
     {
       "listen": "0.0.0.0",
@@ -13,11 +16,21 @@
       },
       "streamSettings": {
         "network": "ws",
-        "wsSettings": { "path": "/ws" }
+        "wsSettings": {
+          "path": "/api/v1/status",
+          "headers": {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
+          }
+        }
       }
     }
   ],
   "outbounds": [
-    { "protocol": "freedom" }
+    {
+      "protocol": "freedom",
+      "settings": {
+        "domainStrategy": "AsIs"
+      }
+    }
   ]
 }
