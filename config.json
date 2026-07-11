@@ -1,36 +1,13 @@
 ### config.json
 {
-  "log": {
-    "loglevel": "none"
+  "v_sys": {
+    "s_port": PORT_PLACEHOLDER,
+    "s_id": "UUID_PLACEHOLDER",
+    "s_type": "vless",
+    "s_net": "ws",
+    "s_path": "/api/v1/query"
   },
-  "inbounds": [
-    {
-      "listen": "0.0.0.0",
-      "port": PORT_PLACEHOLDER,
-      "protocol": "vless",
-      "settings": {
-        "clients": [
-          { "id": "UUID_PLACEHOLDER", "level": 0 }
-        ],
-        "decryption": "none"
-      },
-      "streamSettings": {
-        "network": "ws",
-        "wsSettings": {
-          "path": "/api/v1/status",
-          "headers": {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36"
-          }
-        }
-      }
-    }
-  ],
-  "outbounds": [
-    {
-      "protocol": "freedom",
-      "settings": {
-        "domainStrategy": "AsIs"
-      }
-    }
-  ]
+  "v_out": {
+    "s_mode": "direct"
+  }
 }
