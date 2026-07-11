@@ -14,4 +14,4 @@ fi
 sed -i "s/PORT_PLACEHOLDER/${PORT}/" /etc/xray/config.json
 sed -i "s/UUID_PLACEHOLDER/${CLIENT_UUID}/" /etc/xray/config.json
 
-exec /usr/local/bin/xray run -c /etc/xray/config.json
+exec /usr/bin/xray -config /etc/xray/config.json
