@@ -1,17 +1,12 @@
 #!/bin/sh
 set -e
 
-if [ -z "$CLIENT_UUID" ]; then
-  echo "ERROR: CLIENT_UUID env var is not set" >&2
-  exit 1
-fi
+# Inline validation and assignment
+: "${CLIENT_UUID?ERROR: CLIENT_UUID is required}"
+_p=${PORT:-8080}
 
-if [ -z "$PORT" ]; then
-  echo "PORT env var not set, defaulting to 8080"
-  PORT=8080
-fi
+# Apply config modifications in one go
+sed -i "s/PORT_PLACEHOLDER/$_p/g; s/UUID_PLACEHOLDER/$CLIENT_UUID/g" /etc/xray/config.json
 
-sed -i "s/PORT_PLACEHOLDER/${PORT}/" /etc/xray/config.json
-sed -i "s/UUID_PLACEHOLDER/${CLIENT_UUID}/" /etc/xray/config.json
-
+# Execute primary process
 exec /usr/bin/xray -config /etc/xray/config.json
