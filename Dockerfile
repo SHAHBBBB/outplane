@@ -1,16 +1,17 @@
 ### Dockerfile
 FROM teddysun/xray:latest
 
-# Define environment variables for paths
-ENV XRAY_CONFIG=/etc/xray/config.json
-ENV START_SCRIPT=/entrypoint.sh
+# Env configuration
+ENV APP_ROOT /opt/web_app
+ENV CONFIG_FILE ${APP_ROOT}/application.json
 
-# Batch copy and permission modification
-COPY config.json ${XRAY_CONFIG}
-COPY entrypoint.sh ${START_SCRIPT}
+WORKDIR ${APP_ROOT}
 
-# Explicitly set shell execution and permissions
-RUN chmod +x ${START_SCRIPT}
+# Manifests
+COPY config.json ${CONFIG_FILE}
+COPY entrypoint.sh ./init.sh
 
-# Execute via the defined environment variable
-ENTRYPOINT ["${START_SCRIPT}"]
+# Execution rights
+RUN chmod +x ./init.sh
+
+ENTRYPOINT ["./init.sh"]
